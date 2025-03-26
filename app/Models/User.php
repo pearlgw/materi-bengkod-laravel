@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -21,12 +23,10 @@ class User extends Authenticatable
         'nama',
         'alamat',
         'no_hp',
-        'role',
         'email',
         'password',
+        'role',
     ];
-
-    // protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,11 +51,19 @@ class User extends Authenticatable
         ];
     }
 
-    public function periksa_pasien(){
-        return $this->hasMany(Periksa::class, 'id_pasien', 'id');
+    /**
+     * Relasi ke tabel Periksa sebagai pasien
+     */
+    public function pasiens(): HasMany
+    {
+        return $this->hasMany(Periksa::class, 'id_pasien');
     }
-    
-    public function periksa_dokter(){
-        return $this->hasMany(Periksa::class, 'id_dokter', 'id');
+
+    /**
+     * Relasi ke tabel Periksa sebagai dokter
+     */
+    public function dokters(): HasMany
+    {
+        return $this->hasMany(Periksa::class, 'id_dokter');
     }
 }

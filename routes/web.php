@@ -22,7 +22,7 @@ Route::get('/dokter/obat', [ObatController::class, 'index']);
 
 Route::get('/pasien/dashboard', function () {
     return view('pasien.index');
-});
+})->name('pasien.dashboard');
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');

@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sismenkes - Sistem Manajemen Kesehatan</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Sismenkes | Sistem Manajemen Kesehatan</title>
+    <link rel="icon" href="{{ asset('images/heart-pulse-solid.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('images/heart-pulse-solid.svg') }}">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -11,7 +16,8 @@
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         :root {
@@ -30,7 +36,8 @@
             color: var(--dark-color);
             line-height: 1.6;
             scroll-behavior: smooth;
-            scroll-padding-top: 70px; /* Ensures scrolling stops below the fixed navbar */
+            scroll-padding-top: 70px;
+            /* Ensures scrolling stops below the fixed navbar */
         }
 
         html {
@@ -80,14 +87,14 @@
             border: none;
             border-radius: var(--card-border-radius);
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
             margin-bottom: 1.5rem;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
         .card-img-top {
@@ -97,7 +104,7 @@
 
         .navbar {
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
@@ -134,7 +141,7 @@
         }
 
         .btn-outline-light:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .hero-section {
@@ -214,13 +221,14 @@
             background-color: #212529;
         }
 
-        .footer h3, .footer h4 {
+        .footer h3,
+        .footer h4 {
             color: white;
             margin-bottom: 1.5rem;
         }
 
         .footer-link {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
             transition: var(--transition);
             display: block;
@@ -259,11 +267,25 @@
             color: white;
         }
 
-        .bg-cardiology { background-color: #ff6b6b; }
-        .bg-neurology { background-color: #48dbfb; }
-        .bg-pediatrics { background-color: #1dd1a1; }
-        .bg-orthopedics { background-color: #feca57; }
-        .bg-oncology { background-color: #5f27cd; }
+        .bg-cardiology {
+            background-color: #ff6b6b;
+        }
+
+        .bg-neurology {
+            background-color: #48dbfb;
+        }
+
+        .bg-pediatrics {
+            background-color: #1dd1a1;
+        }
+
+        .bg-orthopedics {
+            background-color: #feca57;
+        }
+
+        .bg-oncology {
+            background-color: #5f27cd;
+        }
 
         @media (max-width: 768px) {
             .hero-section {
@@ -285,6 +307,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary sticky-top">
@@ -314,8 +337,13 @@
                     </li>
                 </ul>
                 <div class="d-flex ms-lg-3">
-                    <a href="{{route('login')}}" class="btn btn-outline-light me-2">Masuk</a>
-                    <a href="{{route('register')}}" class="btn btn-light text-primary">Daftar</a>
+                    @auth
+                        <a href="{{ auth()->user()->role === 'dokter' ? route('dokter.dashboard') : route('pasien.dashboard') }}"
+                            class="btn btn-light text-primary">Dashboard</a>
+                    @else
+                        <a href="/login" class="btn btn-outline-light me-2">Masuk</a>
+                        <a href="/register" class="btn btn-light text-primary">Daftar</a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -327,7 +355,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h1 class="display-4 fw-bold">Sistem Manajemen Kesehatan Modern</h1>
-                    <p class="lead mb-4">Tingkatkan efisiensi operasional dan kualitas pelayanan kesehatan dengan solusi manajemen terpadu kami.</p>
+                    <p class="lead mb-4">Tingkatkan efisiensi operasional dan kualitas pelayanan kesehatan dengan solusi
+                        manajemen terpadu kami.</p>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="#features" class="btn btn-light text-primary btn-lg me-2">
                             Mulai Sekarang <i class="fas fa-chevron-right ms-2"></i>
@@ -338,7 +367,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="{{ asset('images/dashboard-preview.jpg') }}" alt="Healthcare Dashboard" class="img-fluid rounded-3 shadow-lg" style="max-height: 400px;">
+                    <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118" alt="Healthcare Dashboard"
+                        class="img-fluid rounded-3 shadow-lg" style="max-height: 400px;">
                 </div>
             </div>
         </div>
@@ -409,28 +439,34 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card feature-card h-100">
-                        <img src="{{ asset('images/patient-management.jpg') }}" class="card-img-top" alt="Manajemen Pasien">
+                        <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842" class="card-img-top"
+                            alt="Manajemen Pasien">
                         <div class="card-body">
                             <h3 class="h4 card-title">Manajemen Pasien</h3>
-                            <p class="card-text text-muted">Sederhanakan pendaftaran pasien, pelacakan riwayat medis, dan penjadwalan janji temu.</p>
+                            <p class="card-text text-muted">Sederhanakan pendaftaran pasien, pelacakan riwayat medis,
+                                dan penjadwalan janji temu.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card feature-card h-100">
-                        <img src="{{ asset('images/electronic-records.jpg') }}" class="card-img-top" alt="Rekam Medis Elektronik">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef" class="card-img-top"
+                            alt="Rekam Medis Elektronik">
                         <div class="card-body">
                             <h3 class="h4 card-title">Rekam Medis Elektronik</h3>
-                            <p class="card-text text-muted">Rekam medis elektronik yang aman dan mudah diakses dengan riwayat pasien yang komprehensif.</p>
+                            <p class="card-text text-muted">Rekam medis elektronik yang aman dan mudah diakses dengan
+                                riwayat pasien yang komprehensif.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card feature-card h-100">
-                        <img src="{{ asset('images/billing.jpg') }}" class="card-img-top" alt="Penagihan & Asuransi">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f" class="card-img-top"
+                            alt="Penagihan & Asuransi">
                         <div class="card-body">
                             <h3 class="h4 card-title">Penagihan & Asuransi</h3>
-                            <p class="card-text text-muted">Proses penagihan yang disederhanakan dan manajemen klaim asuransi untuk penyedia layanan kesehatan.</p>
+                            <p class="card-text text-muted">Proses penagihan yang disederhanakan dan manajemen klaim
+                                asuransi untuk penyedia layanan kesehatan.</p>
                         </div>
                     </div>
                 </div>
@@ -475,11 +511,13 @@
                             </div>
                             <div class="d-flex justify-content-end">
                                 <span class="me-3 d-flex align-items-center">
-                                    <span class="d-inline-block me-2 rounded-circle bg-primary" style="width: 12px; height: 12px;"></span>
+                                    <span class="d-inline-block me-2 rounded-circle bg-primary"
+                                        style="width: 12px; height: 12px;"></span>
                                     Bulan Ini
                                 </span>
                                 <span class="d-flex align-items-center">
-                                    <span class="d-inline-block me-2 rounded-circle bg-secondary" style="width: 12px; height: 12px;"></span>
+                                    <span class="d-inline-block me-2 rounded-circle bg-secondary"
+                                        style="width: 12px; height: 12px;"></span>
                                     Bulan Lalu
                                 </span>
                             </div>
@@ -636,7 +674,8 @@
                             <div class="mb-4">
                                 <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
                             </div>
-                            <p class="card-text fst-italic mb-4">"Sistem ini telah mengubah cara kami mengelola data pasien dan merampingkan seluruh operasi kami."</p>
+                            <p class="card-text fst-italic mb-4">"Sistem ini telah mengubah cara kami mengelola data
+                                pasien dan merampingkan seluruh operasi kami."</p>
                             <div class="d-flex align-items-center">
                                 <div class="testimonial-img me-3">SJ</div>
                                 <div>
@@ -654,7 +693,8 @@
                             <div class="mb-4">
                                 <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
                             </div>
-                            <p class="card-text fst-italic mb-4">"Kemampuan analitik telah memberi kami wawasan yang membantu meningkatkan perawatan pasien dan mengurangi waktu tunggu."</p>
+                            <p class="card-text fst-italic mb-4">"Kemampuan analitik telah memberi kami wawasan yang
+                                membantu meningkatkan perawatan pasien dan mengurangi waktu tunggu."</p>
                             <div class="d-flex align-items-center">
                                 <div class="testimonial-img me-3">MC</div>
                                 <div>
@@ -672,7 +712,8 @@
                             <div class="mb-4">
                                 <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
                             </div>
-                            <p class="card-text fst-italic mb-4">"Implementasi berjalan lancar dan tim dukungan telah luar biasa dalam membantu kami menyesuaikan sistem."</p>
+                            <p class="card-text fst-italic mb-4">"Implementasi berjalan lancar dan tim dukungan telah
+                                luar biasa dalam membantu kami menyesuaikan sistem."</p>
                             <div class="d-flex align-items-center">
                                 <div class="testimonial-img me-3">AR</div>
                                 <div>
@@ -693,7 +734,8 @@
         <div class="container text-center">
             <h2 class="h1 text-white mb-4">Siap untuk mengubah manajemen kesehatan Anda?</h2>
             <p class="lead text-white mb-5 mx-auto" style="max-width: 700px; opacity: 0.9;">
-                Bergabunglah dengan ribuan penyedia layanan kesehatan yang telah meningkatkan operasi dan perawatan pasien mereka dengan sistem kami.
+                Bergabunglah dengan ribuan penyedia layanan kesehatan yang telah meningkatkan operasi dan perawatan
+                pasien mereka dengan sistem kami.
             </p>
             <div class="d-flex flex-wrap justify-content-center gap-3">
                 <a href="#" class="btn btn-light btn-lg px-4 fw-medium">
@@ -751,7 +793,8 @@
                 </div>
             </div>
             <div class="border-top border-secondary mt-5 pt-4 text-center text-muted">
-                <p>© {{ date('Y') }} SISMENKES. Hak Cipta Dilindungi.</p>
+                Copyright &copy; 2025 <a href="https://bengkelkoding.dinus.ac.id">Bengkel Koding</a>.
+                All rights reserved.
             </div>
         </div>
     </footer>
@@ -772,8 +815,7 @@
 
             var visitorsChartData = {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [
-                    {
+                datasets: [{
                         label: 'Bulan Ini',
                         backgroundColor: 'rgba(13, 110, 253, 0.1)',
                         borderColor: 'rgba(13, 110, 253, 0.8)',
@@ -886,4 +928,5 @@
         });
     </script>
 </body>
+
 </html>

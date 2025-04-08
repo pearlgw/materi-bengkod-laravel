@@ -150,7 +150,7 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('login') }}" method="POST">
+                <form action="/login" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
@@ -182,7 +182,7 @@
                     </div>
 
                     <div class="text-center">
-                        <p class="mb-0">Belum punya akun? <a href="{{ route('register') }}" class="text-primary text-decoration-none">Daftar sekarang</a></p>
+                        <p class="mb-0">Belum punya akun? <a href="/register" class="text-primary text-decoration-none">Daftar sekarang</a></p>
                     </div>
                 </form>
             </div>

@@ -3,12 +3,7 @@
 @section('title', 'Dashboard Pasien')
 
 @section('nav-item')
-<li class="nav-item">
-    <a href="./index.html" class="nav-link">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>Periksa</p>
-    </a>
-</li>
+@include('pasien.components.nav_item')
 @endsection
 
 @section('content')

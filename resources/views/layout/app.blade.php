@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ asset('lte\plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('lte\plugins/summernote/summernote-bs4.min.css') }}">
+    {{-- CDN FontAwesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     @stack('styles')
 </head>
 
@@ -226,18 +228,16 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="./index.html" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
                         @yield('nav-item')
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="nav-icon fas fa-solid fa-arrow-right-from-bracket"></i>
                                 <p>Logout</p>
                             </a>
+
+                            <form action="/logout" method="POST" class="d-none" id="logout-form">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </nav>

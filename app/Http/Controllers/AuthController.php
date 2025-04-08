@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -12,12 +12,12 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
-    public function showRegisterForm()
+    public function showRegsiterForm()
     {
         return view('auth.register');
     }
-
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $validatedData = $request->validate([
             'nama' => 'required|max:255',
             'alamat' => 'required|max:255',
@@ -26,77 +26,57 @@ class AuthController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        try {
-            $existingUser = User::where('email', $validatedData['email'])->first();
-            if ($existingUser) {
-                toastr()->error('Email sudah terdaftar! Silakan gunakan email lain.');
-                return redirect()->back()->withInput();
-            }
-
-            $user = User::create([
-                'nama' => $validatedData['nama'],
-                'alamat' => $validatedData['alamat'],
-                'no_hp' => $validatedData['no_hp'],
-                'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']),
-                'role' => 'pasien',
-            ]);
-
-            toastr()->success('Registrasi berhasil! Silakan login.');
-            return redirect()->route('login');
-
-        } catch (\Exception $e) {
-            toastr()->error('Terjadi kesalahan saat melakukan registrasi. Silakan coba lagi.');
+        if (User::where('email', $validatedData['email'])->exists()) {
+            toastr()->error('Email sudah terdaftar');
             return redirect()->back()->withInput();
         }
-    }
 
-    public function login(Request $request){
-        // Validasi input
-        $credentials = $request->validate([
-            'email' => 'required|email|max:255',
-            'password' => 'required|min:8',
+        User::create([
+            'nama' => $validatedData['nama'],
+            'alamat' => $validatedData['alamat'],
+            'no_hp' => $validatedData['no_hp'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'role' => 'pasien',
         ]);
 
-        try {
-            if (Auth::attempt($credentials)) {
-                // Jika login berhasil
-                $request->session()->regenerate();
+        toastr()->success('Registrasi berhasil, silahkan login');
+        return redirect('/login')->withInput();
+    }
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-                $user = Auth::user();
-                if ($user->role === 'dokter') {
-                    toastr()->success('Selamat datang, ' . $user->nama . '!');
-                    return redirect()->route('dokter.dashboard');
-                } elseif ($user->role === 'pasien') {
-                    toastr()->success('Selamat datang, ' . $user->nama . '!');
-                    return redirect()->route('pasien.dashboard');
-                } else {
-                    return redirect()->route('');
-                }
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            toastr()->success('Selamat datang ' . $user->nama);
+
+            if ($user->role === 'dokter') {
+                return redirect('dokter/dashboard');
+            } elseif ($user->role === 'pasien') {
+                return redirect('pasien/dashboard');
+            } else {
+                return abort(403, 'Unauthorized action.');
             }
-
-            toastr()->error('Email atau password salah! Silakan coba lagi.');
-            return redirect()->back()->withInput();
-
-        } catch (\Exception $e) {
-            toastr()->error('Terjadi kesalahan saat melakukan login. Silakan coba lagi.');
-            return redirect()->back()->withInput();
         }
+
+        toastr()->error('Email atau password salah');
+        return redirect()->back()->withInput();
     }
     public function logout(Request $request)
     {
-        try {
-            Auth::logout();
+        Auth::logout();
 
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-            toastr()->success('Anda berhasil logout.');
-
-            return redirect()->route('login');
-        } catch (\Exception $e) {
-            toastr()->error('Terjadi kesalahan saat melakukan logout. Silakan coba lagi.');
-            return redirect()->back();
-        }
+        toastr()->success('Anda berhasil logout');
+        return redirect('/login');
     }
 }
